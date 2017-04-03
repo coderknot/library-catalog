@@ -62,4 +62,38 @@ public class BookTest {
     testBook.save();
     assertTrue(Book.all().get(0).equals(testBook));
   }
+
+  @Test
+  public void find_returnsBookWithSameId_Book() {
+    Book testBook1 = new Book("Firestarter", "Stephen King", 1);
+    testBook1.save();
+    Book testBook2 = new Book("The Stand", "Stephen King", 1);
+    testBook2.save();
+    assertEquals(testBook2, Book.find(testBook2.getId()));
+  }
+
+  @Test
+  public void updateTitle_updatesBookTitle_true() {
+    Book testBook = new Book("Firestarterr", "Stephen King", 1);
+    testBook.save();
+    testBook.updateTitle("Firestarter");
+    assertEquals("Firestarter", Book.find(testBook.getId()).getTitle());
+  }
+
+  @Test
+  public void updateAuthor_updatesBookAuthor_true() {
+    Book testBook = new Book("Firestarter", "Stephenn King", 1);
+    testBook.save();
+    testBook.updateAuthor("Stephen King");
+    assertEquals("Stephen King", Book.find(testBook.getId()).getAuthor());
+  }
+
+  @Test
+  public void delete_deletesBook_true() {
+    Book testBook = new Book("Firestarterr", "Stephen King", 1);
+    testBook.save();
+    int testBookId = testBook.getId();
+    testBook.delete();
+    assertEquals(null, Book.find(testBookId));
+  }
 }

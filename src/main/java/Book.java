@@ -30,6 +30,17 @@ public class Book {
     return this.genreId;
   }
 
+  public static Book find(int id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM books WHERE id = :id;";
+      Book book = con.createQuery(sql)
+        .addColumnMapping("genre_id", "genreId")
+        .addParameter("id", id)
+        .executeAndFetchFirst(Book.class);
+      return book;
+    }
+  }
+
   public static List<Book> all() {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM books;";
@@ -52,6 +63,7 @@ public class Book {
     }
   }
 
+  @Override
   public boolean equals(Object otherBook) {
     if(!(otherBook instanceof Book)) {
       return false;
@@ -63,4 +75,44 @@ public class Book {
         this.getGenreId() == newBook.getGenreId();
     }
   }
+
+  public void updateTitle(String title) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE books SET title = :title WHERE id = :id;";
+      con.createQuery(sql)
+        .addParameter("title", title)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
+  public void updateAuthor(String author) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE books SET author = :author WHERE id = :id;";
+      con.createQuery(sql)
+        .addParameter("author", author)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
+  public void updateGenre(int genreId) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE books SET genreId = :genreId WHERE id = :id;";
+      con.createQuery(sql)
+        .addParameter("genreId", genreId)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
+  public void delete() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM books WHERE id = :id;";
+      con.createQuery(sql)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
 }
