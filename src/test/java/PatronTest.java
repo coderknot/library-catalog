@@ -68,4 +68,36 @@ public class PatronTest {
     testPatron.save();
     assertTrue(Patron.all().get(0).equals(testPatron));
   }
+
+  @Test
+  public void find_returnsPatronWithSameId_Patron() {
+    Patron testPatron = new Patron("Chris", "(555) 555-5555", "test@gmail.com");
+    testPatron.save();
+    Patron testPatron2 = new Patron("Grace", "(555) 555-5556", "test2@gmail.com");
+    testPatron2.save();
+    assertEquals(testPatron, Patron.find(testPatron.getId()));
+  }
+
+  @Test
+  public void updateName_updatesPatronName_true() {
+    Patron testPatron = new Patron("Chris", "(555) 555-5555", "test@gmail.com");
+    testPatron.save();
+    testPatron.updateName("Kris");
+    assertEquals("Kris", Patron.find(testPatron.getId()).getName());
+  }
+
+  @Test
+  public void updatePhone_updatesPatronFone_true() {
+
+  }
+
+  @Test
+  public void updateEmail_updatesEmail_true() {
+
+  }
+
+  @Test
+  public void delete_deletesPatron_true() {
+
+  }
 }

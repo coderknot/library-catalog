@@ -36,6 +36,17 @@ public class Patron {
     return this.bookCount;
   }
 
+  public static Patron find(int id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM patrons WHERE id = :id;";
+      Patron patron = con.createQuery(sql)
+        .addColumnMapping("book_count", "bookCount")
+        .addParameter("id", id)
+        .executeAndFetchFirst(Patron.class);
+      return patron;
+    }
+  }
+
   public static List<Patron> all() {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM patrons;";
@@ -59,6 +70,7 @@ public class Patron {
     }
   }
 
+  @Override
   public boolean equals(Object otherPatron) {
     if(!(otherPatron instanceof Patron)) {
       return false;
@@ -71,4 +83,27 @@ public class Patron {
         this.getBookCount() == newPatron.getBookCount();
     }
   }
+
+  public void updateName(String name) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE patrons SET name = :name WHERE id = :id;";
+      con.createQuery(sql)
+        .addParameter("name", name)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
+  public void updatePhone(int phone) {
+
+  }
+
+  public void updateEmail(String name) {
+
+  }
+
+  public void delete() {
+
+  }
+
 }
