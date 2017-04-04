@@ -50,15 +50,15 @@ public class BookTest {
   public void all_returnsAllSavedBooks_true() {
     Book testBook1 = new Book("Firestarter", "Viking Press", "Stephen King", 1);
     testBook1.save();
-    // Book testBook2 = new Book("The Stand", "Double Day", "Stephen King", 1);
-    // testBook2.save();
+    Book testBook2 = new Book("The Stand", "Double Day", "Stephen King", 1);
+    testBook2.save();
     assertTrue(Book.all().get(0).equals(testBook1));
-    // assertTrue(Book.all().get(1).equals(testBook2));
+    assertTrue(Book.all().get(1).equals(testBook2));
   }
 
   @Test
   public void save_returnsTrueIfBookSaved_true() {
-  Book testBook = new Book("Firestarter", "Viking Press", "Stephen King", 1);
+    Book testBook = new Book("Firestarter", "Viking Press", "Stephen King", 1);
     testBook.save();
     assertTrue(Book.all().get(0).equals(testBook));
   }

@@ -29,32 +29,19 @@ public abstract class Media {
     return this.genre_id;
   }
 
-  @Override
-  public boolean equals(Object otherMedia) {
-    if(!(otherMedia instanceof Media)) {
-      return false;
-    } else {
-      Media newMedia = (Media) otherMedia;
-      return this.getTitle().equals(newMedia.getTitle()) &&
-             this.getPublisher().equals(newMedia.getPublisher()) &&
-             this.getAuthor().equals(newMedia.getAuthor()) &&
-             this.getTypeId() == newMedia.getTypeId();
-    }
-  }
-
-  public void save() {
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO media (title, publisher, type_id, genre_id) VALUES (:title, :publisher, :type_id, :genre_id)";
-      this.id = (int) con.createQuery(sql, true)
-          .addParameter("title", this.title)
-          .addParameter("publisher", this.title)
-          .addParameter("type_id", this.type_id)
-          .addParameter("genre_id", this.genre_id)
-          .throwOnMappingFailure(false)
-          .executeUpdate()
-          .getKey();
-    }
-  }
+  // public void save() {
+  //   try(Connection con = DB.sql2o.open()) {
+  //     String sql = "INSERT INTO media (title, publisher, type_id, genre_id) VALUES (:title, :publisher, :type_id, :genre_id)";
+  //     this.id = (int) con.createQuery(sql, true)
+  //         .addParameter("title", this.title)
+  //         .addParameter("publisher", this.publisher)
+  //         .addParameter("type_id", this.type_id)
+  //         .addParameter("genre_id", this.genre_id)
+  //         .throwOnMappingFailure(false)
+  //         .executeUpdate()
+  //         .getKey();
+  //   }
+  // }
 
   public void updateTitle(String title) {
     try(Connection con = DB.sql2o.open()) {

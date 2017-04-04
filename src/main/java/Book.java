@@ -17,15 +17,42 @@ public class Book extends Media {
     return this.author;
   }
 
+  @Override
+  public boolean equals(Object otherBook) {
+    if(!(otherBook instanceof Book)) {
+      return false;
+    } else {
+      Book newBook = (Book) otherBook;
+      return this.getTitle().equals(newBook.getTitle()) &&
+             this.getPublisher().equals(newBook.getPublisher()) &&
+             this.getAuthor().equals(newBook.getAuthor()) &&
+             this.getTypeId() == newBook.getTypeId();
+    }
+  }
+
   public static Book find(int id) {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM media WHERE id = :id;";
       Book book = con.createQuery(sql)
-        .addColumnMapping("genre_id", "genre_id")
         .throwOnMappingFailure(false)
         .addParameter("id", id)
         .executeAndFetchFirst(Book.class);
       return book;
+    }
+  }
+
+  public void save() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO media (title, publisher, type_id, genre_id, author) VALUES (:title, :publisher, :type_id, :genre_id, :author)";
+      this.id = (int) con.createQuery(sql, true)
+          .addParameter("title", this.title)
+          .addParameter("publisher", this.publisher)
+          .addParameter("type_id", this.type_id)
+          .addParameter("genre_id", this.genre_id)
+          .addParameter("author", this.author)
+          .throwOnMappingFailure(false)
+          .executeUpdate()
+          .getKey();
     }
   }
 
